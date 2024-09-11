@@ -11,16 +11,22 @@ interface Photo {
   created_at: string;
 }
 
-export const usePhotos = (query: string = "nature") => {
+export const usePhotos = (query: string = "nature", pageNumber: number) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    unsplash.search.getPhotos({ query, perPage: 30 }).then((result) => {
-      setPhotos(result.response?.results || []);
-      setLoading(false);
-    });
-  }, [query]);
+    setLoading(true);
+    unsplash.search
+      .getPhotos({ query, page: pageNumber, perPage: 30 })
+      .then((result) => {
+        const fetchedPhotos = result.response?.results || [];
+        setPhotos((prevPhotos) => [...prevPhotos, ...fetchedPhotos]);
+        setHasMore(fetchedPhotos.length > 0);
+        setLoading(false);
+      });
+  }, [query, pageNumber]);
 
-  return { photos, loading };
+  return { photos, loading, hasMore };
 };
