@@ -2,6 +2,8 @@ import * as S from "./MasonryGrid.styled";
 import { usePhotos } from "../../hooks/usePhotos";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "../Search/Search";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 
 export const MasonryGrid = () => {
   const [query, setQuery] = useState("nature");
@@ -27,6 +29,10 @@ export const MasonryGrid = () => {
     },
     [loading, hasMore]
   );
+  const debouncedSearch = useDebouncedCallback((newQuery: string) => {
+    setQuery(newQuery);
+    setPageNumber(1);
+  }, 500);
 
   useEffect(() => {
     if (photos.length > 0) {
@@ -38,37 +44,40 @@ export const MasonryGrid = () => {
   }, [photos]);
 
   return (
-    <S.Grid>
-      {memoizedPhotos.map((photo, index) => {
-        if (index === photos.length - 1) {
-          return (
-            <S.PhotoItem
-              key={photo.id}
-              height={photo.height}
-              ref={lastPhotoRef}
-            >
-              <Link to={`/photo/${photo.id}`}>
-                <img
-                  src={photo.urls.small}
-                  alt={photo.alt_description ?? "No description available!"}
-                />
-              </Link>
-            </S.PhotoItem>
-          );
-        } else {
-          return (
-            <S.PhotoItem key={photo.id} height={photo.height}>
-              <Link to={`/photo/${photo.id}`}>
-                <img
-                  src={photo.urls.small}
-                  alt={photo.alt_description ?? "No description available!"}
-                />
-              </Link>
-            </S.PhotoItem>
-          );
-        }
-      })}
-      {loading && <div>Loading more photos...</div>}
-    </S.Grid>
+    <>
+      <Search onChange={(e) => debouncedSearch(e.target.value)} />
+      <S.Grid>
+        {memoizedPhotos.map((photo, index) => {
+          if (index === photos.length - 1) {
+            return (
+              <S.PhotoItem
+                key={photo.id}
+                height={photo.height}
+                ref={lastPhotoRef}
+              >
+                <Link to={`/photo/${photo.id}`}>
+                  <img
+                    src={photo.urls.small}
+                    alt={photo.alt_description ?? "No description available!"}
+                  />
+                </Link>
+              </S.PhotoItem>
+            );
+          } else {
+            return (
+              <S.PhotoItem key={photo.id} height={photo.height}>
+                <Link to={`/photo/${photo.id}`}>
+                  <img
+                    src={photo.urls.small}
+                    alt={photo.alt_description ?? "No description available!"}
+                  />
+                </Link>
+              </S.PhotoItem>
+            );
+          }
+        })}
+        {loading && <div>Loading more photos...</div>}
+      </S.Grid>
+    </>
   );
 };
