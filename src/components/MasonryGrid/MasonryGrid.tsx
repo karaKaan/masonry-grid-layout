@@ -10,8 +10,8 @@ const COLUMN_COUNT = 3;
 const DEBOUNCE_DELAY = 500;
 
 export const MasonryGrid: React.FC = () => {
-  const [query, setQuery] = useState<string>("nature");
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [query, setQuery] = useState("nature");
+  const [pageNumber, setPageNumber] = useState(1);
   const { photos, loading, hasMore } = usePhotos(query, pageNumber);
   const memoizedPhotos = useMemo(() => photos, [photos]);
 
