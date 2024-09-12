@@ -6,7 +6,7 @@ import * as S from "./PhotoDetail.styled";
 import { ChevronLeftCircle } from "../Icons/ChevronLeftCircle";
 
 type PhotoDetailProps = {};
-interface PhotoDetail {
+interface PhotoDetailInterface {
   fullUrl: string;
   title: string;
   description: string;
@@ -14,9 +14,9 @@ interface PhotoDetail {
   dateTaken: string;
 }
 
-export const PhotoDetail = (props: PhotoDetailProps) => {
+const PhotoDetail = (props: PhotoDetailProps) => {
   const { id } = useParams();
-  const [photoDetails, setPhotoDetails] = useState<PhotoDetail>();
+  const [photoDetails, setPhotoDetails] = useState<PhotoDetailInterface>();
   //   if (!id) return <>error</>;
 
   useEffect(() => {
@@ -56,3 +56,5 @@ export const PhotoDetail = (props: PhotoDetailProps) => {
     </S.PhotoDetailWrapper>
   );
 };
+
+export default PhotoDetail;
