@@ -19,7 +19,7 @@ export const usePhotos = (query: string = "nature", pageNumber: number) => {
   useEffect(() => {
     setLoading(true);
     unsplash.search
-      .getPhotos({ query, page: pageNumber, perPage: 30 })
+      .getPhotos({ query, page: pageNumber, perPage: 30, })
       .then((result) => {
         const fetchedPhotos = result.response?.results || [];
         setPhotos((prevPhotos) => [...prevPhotos, ...fetchedPhotos]);

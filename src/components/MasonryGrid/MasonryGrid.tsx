@@ -1,6 +1,7 @@
 import * as S from "./MasonryGrid.styled";
 import { usePhotos } from "../../hooks/usePhotos";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const MasonryGrid = () => {
   const [query, setQuery] = useState("nature");
@@ -45,19 +46,23 @@ export const MasonryGrid = () => {
               height={photo.height}
               ref={lastPhotoRef}
             >
-              <img
-                src={photo.urls.small}
-                alt={photo.alt_description ?? "No description available!"}
-              />
+              <Link to={`/photo/${photo.id}`}>
+                <img
+                  src={photo.urls.small}
+                  alt={photo.alt_description ?? "No description available!"}
+                />
+              </Link>
             </S.PhotoItem>
           );
         } else {
           return (
             <S.PhotoItem key={photo.id} height={photo.height}>
-              <img
-                src={photo.urls.small}
-                alt={photo.alt_description ?? "No description available!"}
-              />
+              <Link to={`/photo/${photo.id}`}>
+                <img
+                  src={photo.urls.small}
+                  alt={photo.alt_description ?? "No description available!"}
+                />
+              </Link>
             </S.PhotoItem>
           );
         }
