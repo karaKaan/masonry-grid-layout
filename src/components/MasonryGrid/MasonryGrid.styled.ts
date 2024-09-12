@@ -14,5 +14,11 @@ export const PhotoItem = styled.div<{ height: number }>`
     height: auto;
     object-fit: cover;
     display: block;
+    transition: scale ease 250ms;
+  }
+
+  img:hover {
+    scale: 105%;
+    transition: scale ease 250ms;
   }
 `;
