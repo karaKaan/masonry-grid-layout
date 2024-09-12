@@ -8,6 +8,7 @@ export const MasonryGrid = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { photos, loading, hasMore } = usePhotos(query, pageNumber);
   const [photoHeights, setPhotoHeights] = useState<number[]>([]);
+  const memoizedPhotos = useMemo(() => photos, [photos]);
 
   const imageRefs = useRef<HTMLImageElement[]>([]);
   const observer = useRef<IntersectionObserver | null>(null);
@@ -38,7 +39,7 @@ export const MasonryGrid = () => {
 
   return (
     <S.Grid>
-      {photos.map((photo, index) => {
+      {memoizedPhotos.map((photo, index) => {
         if (index === photos.length - 1) {
           return (
             <S.PhotoItem
