@@ -1,22 +1,24 @@
 import * as S from "./MasonryGrid.styled";
-import { usePhotos } from "../../hooks/usePhotos";
+import { usePhotos, Photo } from "../../hooks/usePhotos";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search } from "../Search/Search";
 import { useDebouncedCallback } from "use-debounce";
 import { Container } from "../Container/Container";
 
-export const MasonryGrid = () => {
-  const [query, setQuery] = useState("nature");
-  const [pageNumber, setPageNumber] = useState(1);
+const COLUMN_COUNT = 3;
+const DEBOUNCE_DELAY = 500;
+
+export const MasonryGrid: React.FC = () => {
+  const [query, setQuery] = useState<string>("nature");
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const { photos, loading, hasMore } = usePhotos(query, pageNumber);
   const memoizedPhotos = useMemo(() => photos, [photos]);
 
   const observer = useRef<IntersectionObserver | null>(null);
-  const columnCount = 3; 
 
   const lastPhotoRef = useCallback(
-    (node: any) => {
+    (node: HTMLDivElement | null) => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
 
@@ -33,15 +35,15 @@ export const MasonryGrid = () => {
   const debouncedSearch = useDebouncedCallback((newQuery: string) => {
     setQuery(newQuery);
     setPageNumber(1);
-  }, 500);
+  }, DEBOUNCE_DELAY);
 
   const columns = useMemo(() => {
-    const cols: any[][] = Array.from({ length: columnCount }, () => []);
+    const cols: Photo[][] = Array.from({ length: COLUMN_COUNT }, () => []);
     memoizedPhotos.forEach((photo, index) => {
-      cols[index % columnCount].push(photo);
+      cols[index % COLUMN_COUNT].push(photo);
     });
     return cols;
-  }, [memoizedPhotos, columnCount]);
+  }, [memoizedPhotos]);
 
   return (
     <Container>
@@ -53,7 +55,7 @@ export const MasonryGrid = () => {
               <S.PhotoItem
                 key={photo.id}
                 ref={
-                  columnIndex === columnCount - 1 &&
+                  columnIndex === COLUMN_COUNT - 1 &&
                   photoIndex === column.length - 1
                     ? lastPhotoRef
                     : null
@@ -62,7 +64,7 @@ export const MasonryGrid = () => {
                 <Link to={`/photo/${photo.id}`}>
                   <img
                     src={photo.urls.small}
-                    alt={photo.alt_description ?? "No description available!"}
+                    alt={photo.alt_description ?? "No description available"}
                   />
                 </Link>
               </S.PhotoItem>
