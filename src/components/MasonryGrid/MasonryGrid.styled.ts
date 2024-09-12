@@ -1,24 +1,31 @@
 import styled from "styled-components";
 
 export const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1em;
-  grid-auto-flow: dense;
 `;
 
-export const PhotoItem = styled.div<{ height: number }>`
-  grid-row-end: span ${({ height }) => Math.ceil(height / 1000)};
+export const Column = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+`;
+
+export const PhotoItem = styled.div`
+  width: 100%;
+
   img {
     width: 100%;
     height: auto;
     object-fit: cover;
     display: block;
-    transition: scale ease 250ms;
+    transition: transform ease 250ms;
   }
 
   img:hover {
-    scale: 105%;
-    transition: scale ease 250ms;
+    transform: scale(1.05);
+    transition: transform ease 250ms;
   }
 `;

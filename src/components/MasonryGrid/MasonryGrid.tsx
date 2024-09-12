@@ -1,6 +1,6 @@
 import * as S from "./MasonryGrid.styled";
 import { usePhotos } from "../../hooks/usePhotos";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search } from "../Search/Search";
 import { useDebouncedCallback } from "use-debounce";
@@ -10,11 +10,10 @@ export const MasonryGrid = () => {
   const [query, setQuery] = useState("nature");
   const [pageNumber, setPageNumber] = useState(1);
   const { photos, loading, hasMore } = usePhotos(query, pageNumber);
-  const [photoHeights, setPhotoHeights] = useState<number[]>([]);
   const memoizedPhotos = useMemo(() => photos, [photos]);
 
-  const imageRefs = useRef<HTMLImageElement[]>([]);
   const observer = useRef<IntersectionObserver | null>(null);
+  const columnCount = 3; 
 
   const lastPhotoRef = useCallback(
     (node: any) => {
@@ -30,31 +29,35 @@ export const MasonryGrid = () => {
     },
     [loading, hasMore]
   );
+
   const debouncedSearch = useDebouncedCallback((newQuery: string) => {
     setQuery(newQuery);
     setPageNumber(1);
   }, 500);
 
-  useEffect(() => {
-    if (photos.length > 0) {
-      const updatedHeights = imageRefs.current.map((img) => {
-        return img ? img.offsetHeight : 0;
-      });
-      setPhotoHeights(updatedHeights);
-    }
-  }, [photos]);
+  const columns = useMemo(() => {
+    const cols: any[][] = Array.from({ length: columnCount }, () => []);
+    memoizedPhotos.forEach((photo, index) => {
+      cols[index % columnCount].push(photo);
+    });
+    return cols;
+  }, [memoizedPhotos, columnCount]);
 
   return (
     <Container>
       <Search onChange={(e) => debouncedSearch(e.target.value)} />
       <S.Grid>
-        {memoizedPhotos.map((photo, index) => {
-          if (index === photos.length - 1) {
-            return (
+        {columns.map((column, columnIndex) => (
+          <S.Column key={columnIndex}>
+            {column.map((photo, photoIndex) => (
               <S.PhotoItem
                 key={photo.id}
-                height={photo.height}
-                ref={lastPhotoRef}
+                ref={
+                  columnIndex === columnCount - 1 &&
+                  photoIndex === column.length - 1
+                    ? lastPhotoRef
+                    : null
+                }
               >
                 <Link to={`/photo/${photo.id}`}>
                   <img
@@ -63,22 +66,11 @@ export const MasonryGrid = () => {
                   />
                 </Link>
               </S.PhotoItem>
-            );
-          } else {
-            return (
-              <S.PhotoItem key={photo.id} height={photo.height}>
-                <Link to={`/photo/${photo.id}`}>
-                  <img
-                    src={photo.urls.small}
-                    alt={photo.alt_description ?? "No description available!"}
-                  />
-                </Link>
-              </S.PhotoItem>
-            );
-          }
-        })}
-        {loading && <div>Loading more photos...</div>}
+            ))}
+          </S.Column>
+        ))}
       </S.Grid>
+      {loading && <div>Loading more photos...</div>}
     </Container>
   );
 };
