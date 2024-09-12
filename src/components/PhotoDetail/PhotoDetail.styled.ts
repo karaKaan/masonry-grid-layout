@@ -1,11 +1,7 @@
 import styled from "styled-components";
+import { Container } from "../Container/Container.styled";
 
-export const PhotoDetailWrapper = styled.div`
-  margin-top: 5em;
-  width: 100%;
-  max-width: 60em;
-  margin-inline: auto;
-  gap: 3em;
+export const PhotoDetailContainer = styled(Container)`
   :first-child {
     margin-bottom: 1rem;
     svg {

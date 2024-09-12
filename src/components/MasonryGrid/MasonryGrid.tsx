@@ -3,7 +3,8 @@ import { usePhotos } from "../../hooks/usePhotos";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search } from "../Search/Search";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { useDebouncedCallback } from "use-debounce";
+import { Container } from "../Container/Container";
 
 export const MasonryGrid = () => {
   const [query, setQuery] = useState("nature");
@@ -44,7 +45,7 @@ export const MasonryGrid = () => {
   }, [photos]);
 
   return (
-    <>
+    <Container>
       <Search onChange={(e) => debouncedSearch(e.target.value)} />
       <S.Grid>
         {memoizedPhotos.map((photo, index) => {
@@ -78,6 +79,6 @@ export const MasonryGrid = () => {
         })}
         {loading && <div>Loading more photos...</div>}
       </S.Grid>
-    </>
+    </Container>
   );
 };

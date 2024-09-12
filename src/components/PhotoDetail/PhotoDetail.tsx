@@ -36,7 +36,7 @@ const PhotoDetail = (props: PhotoDetailProps) => {
     if (id) getPhotoById(id);
   }, [id]);
   return (
-    <S.PhotoDetailWrapper>
+    <S.PhotoDetailContainer>
       <Link to="/" className="chevron-left-link">
         <ChevronLeftCircle />
       </Link>
@@ -53,7 +53,7 @@ const PhotoDetail = (props: PhotoDetailProps) => {
           <S.PhotoDescription>{photoDetails?.description}</S.PhotoDescription>
         </S.ContentWrapper>
       </S.ImageAndContentWrapper>
-    </S.PhotoDetailWrapper>
+    </S.PhotoDetailContainer>
   );
 };
 
