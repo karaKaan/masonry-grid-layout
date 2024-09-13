@@ -17,20 +17,21 @@ interface PhotoDetailInterface {
 const PhotoDetail = (props: PhotoDetailProps) => {
   const { id } = useParams();
   const [photoDetails, setPhotoDetails] = useState<PhotoDetailInterface>();
-  //   if (!id) return <>error</>;
+
+  const NO_DATA_AVAILABLE = "No data available";
 
   useEffect(() => {
     const getPhotoById = async (photoId: string) => {
       const photoResponse = (await unsplash.photos.get({ photoId })).response;
       // title, description and dateTaken is not available in the api. I had to use alternatives for it.
       setPhotoDetails({
-        fullUrl: photoResponse?.urls.full ?? "No data available",
-        title: photoResponse?.description ?? "No data available",
-        description: photoResponse?.alt_description ?? "No data available",
-        author: photoResponse?.user.name ?? "No data available",
+        fullUrl: photoResponse?.urls.full ?? NO_DATA_AVAILABLE,
+        title: photoResponse?.description ?? NO_DATA_AVAILABLE,
+        description: photoResponse?.alt_description ?? NO_DATA_AVAILABLE,
+        author: photoResponse?.user.name ?? NO_DATA_AVAILABLE,
         dateTaken: photoResponse?.created_at
           ? dayjs(photoResponse?.created_at).format("DD MMM. YYYY")
-          : "No data available",
+          : NO_DATA_AVAILABLE,
       });
     };
     if (id) getPhotoById(id);

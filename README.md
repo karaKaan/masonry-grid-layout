@@ -1,46 +1,32 @@
-# Getting Started with Create React App
+# Getting Started
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Create a new unsplash developer account and get your access key
+2. Add the access key to the .env file - please refer to .env.example
+3. install dependencies
+4. Run the app
 
-## Available Scripts
+```bash
+npm start
+```
 
-In the project directory, you can run:
+5. Enjoy the app
 
-### `npm start`
+# Issues
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. The data title,description and dateTaken for images are not available in the API, so I've used other information as replacement, which comes close to it.
+2. The virtualized list is not implemented because of time constraints and either the virtualized is not correctly implemented or the masonry layout breaks.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Features I have added
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Followed a modular approach by creating custom hooks for fetching photos and implementing a custom masonry grid layout.
+2. Created a masonry grid layout.
+3. Implemented an infinite scroll feature.
+4. On the list view, I am using images small url and on the detail view, I am using the full url.
+5. Memoized the photos array to prevent unnecessary re-renders.
+6. Created a feature to search for photos.
+7. Used debounce to prevent unnecessary API calls.
+8. Used lazy loading for the photo detail view.
+9. Used react router for navigation.
+10. Used styled components for styling.
+11. Used dayjs for date formatting.
+12. Added error handling for the API calls.
